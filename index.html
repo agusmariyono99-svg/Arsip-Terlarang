@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ARSIP TERLARANG - Desktop & Mobile</title>
+<link href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050505;
+  --fg:#e6e6e6;
+  --accent:#b30000;
+}
+.light{
+  --bg:#f3f3f3;
+  --fg:#111;
+  --accent:#b30000;
+}
+body{
+  margin:0;
+  font-family:Segoe UI,sans-serif;
+  color:var(--fg);
+  background:var(--bg);
+}
+header{
+  position:fixed;
+  top:0;
+  width:100%;
+  padding:12px 20px;
+  background:#000c;
+  backdrop-filter:blur(6px);
+  z-index:10;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logo{
+  font-family:'Nosifer';
+  font-size:28px;
+  color:var(--accent);
+  text-shadow:0 0 10px #600;
+}
+button{
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  padding:6px 12px;
+  border-radius:6px;
+  cursor:pointer;
+}
+main{
+  padding:100px 40px 40px 40px;
+  max-width:1000px;
+  margin:auto;
+}
+.story{
+  background:rgba(179,0,0,0.1);
+  padding:14px;
+  margin:12px 0;
+  border-left:5px solid var(--accent);
+  border-radius:8px;
+  cursor:pointer;
+  word-wrap:break-word;
+  transition:transform 0.2s;
+}
+.story:hover{
+  transform:scale(1.02);
+}
+.story button{
+  margin-left:8px;
+  padding:4px 10px;
+  font-size:0.9rem;
+}
+.story-images img{
+  width:100%;
+  max-width:400px;
+  margin:5px 0;
+  border-radius:8px;
+  display:block;
+}
+#detail p{
+  white-space:pre-wrap;
+  line-height:1.6;
+  font-size:17px;
+}
+#ratingStars span{
+  cursor:pointer;
+  font-size:22px;
+  color:#555;
+}
+#ratingStars span.active{
+  color:gold;
+}
+.comment{border-bottom:1px solid #555;padding:6px 0;}
+.commentBox textarea{
+  width:100%;
+  margin:6px 0;
+  padding:8px;
+  border-radius:6px;
+  background:#080000;
+  color:#eee;
+  border:1px solid #500;
+  font-size:15px;
+}
+.commentBox button{
+  padding:6px 12px;
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  margin-top:4px;
+}
+
+/* Tombol Admin di pojok kanan atas */
+#adminButton{
+  position:fixed;
+  top:15px;
+  right:15px;
+  padding:10px 18px;
+  border:none;
+  border-radius:8px;
+  background:linear-gradient(145deg,#700,#b30000);
+  color:#fff;
+  cursor:pointer;
+  z-index:1000;
+}
+
+/* Panel Admin di pojok kanan bawah */
+#adminPanel{
+  display:none;
+  position:fixed;
+  bottom:15px;
+  right:15px;
+  width:350px;
+  max-height:80vh;
+  overflow-y:auto;
+  background:#0b0000;
+  border:2px solid var(--accent);
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 0 25px rgba(179,0,0,0.7);
+  z-index:1001;
+}
+#adminPanel input,#adminPanel textarea{
+  width:100%;
+  margin:6px 0;
+  padding:8px;
+  border-radius:8px;
+  border:1px solid #500;
+  background:#080000;
+  color:#eee;
+}
+#adminPanel button{
+  background:linear-gradient(145deg,#700,#b30000);
+  color:#fff;
+  border:none;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  margin-top:6px;
+}
+
+#jumpscareOverlay{
+  position:fixed;
+  inset:0;
+  background:black center/contain no-repeat;
+  display:none;
+  z-index:2000;
+  animation:flicker 1.5s linear;
+}
+@keyframes flicker{
+  0%,19%,21%,23%,25%,54%,56%,100%{opacity:1;}
+  20%,22%,24%,55%{opacity:0;}
+}
+
+#intro{
+  position:fixed;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  background:radial-gradient(circle at center,#050505 0%,#000 100%);
+  z-index:1000;
+}
+#intro h1{
+  font-family:'Nosifer';
+  font-size:60px;
+  color:var(--accent);
+  text-shadow:0 0 15px #600,0 0 25px #b30000;
+  margin:0 0 25px 0;
+  text-align:center;
+}
+#intro button{
+  padding:15px 35px;
+  font-size:18px;
+  font-weight:700;
+  border-radius:50px;
+  border:none;
+  background:linear-gradient(145deg,#700,#b30000);
+  color:#fff;
+  cursor:pointer;
+  box-shadow:0 0 25px rgba(179,0,0,0.7);
+}
+@media(max-width:768px){
+  main{padding:100px 20px 20px 20px;}
+  #intro h1{font-size:42px;}
+  #intro button{font-size:16px;padding:12px 28px;}
+}
+@media(max-width:480px){
+  #intro h1{font-size:36px;}
+  #intro button{font-size:14px;padding:10px 25px;}
+}
+</style>
+</head>
+<body>
+
+<audio id="bg" loop>
+<source src="https://assets.mixkit.co/sfx/preview/mixkit-horror-ambience-2487.mp3" type="audio/mpeg">
+</audio>
+<audio id="whisper">
+<source src="https://assets.mixkit.co/sfx/preview/mixkit-creepy-whispers-2221.mp3" type="audio/mpeg">
+</audio>
+
+<div id="intro">
+  <h1>ARSIP TERLARANG</h1>
+  <button onclick="startApp()">Mulai</button>
+</div>
+
+<div id="app" style="display:none;">
+<header>
+<div class="logo">ARSIP TERLARANG</div>
+<button onclick="toggleTheme()">🌓</button>
+</header>
+<main>
+<div id="stories"></div>
+<div id="detail"></div>
+<div id="ratingBox" style="margin-top:15px;display:none;"><b>Rating:</b> <span id="ratingStars"></span> (<span id="avgRating">0</span>)</div>
+<div class="commentBox" style="display:none;margin-top:15px;">
+<h3>Komentar</h3>
+<div id="comments"></div>
+<textarea id="newComment" placeholder="Tulis komentar..."></textarea>
+<button onclick="addComment()">Kirim</button>
+</div>
+</main>
+</div>
+
+<button id="adminButton" onclick="toggleAdminPanel()">Admin</button>
+<div id="adminPanel">
+<h3>Admin Panel</h3>
+<input id="title" placeholder="Judul cerita">
+<input type="file" id="fileInput" accept="image/*" multiple>
+<textarea id="text" placeholder="Isi cerita"></textarea>
+<button onclick="saveStory()">Simpan Perubahan</button>
+<button onclick="addStory()">Tambah Cerita Baru</button>
+<button onclick="exportStories()">Export JSON</button>
+</div>
+
+<div id="jumpscareOverlay"></div>
+
+<script>
+const bg=document.getElementById("bg"),
+      whisper=document.getElementById("whisper"),
+      jumpscareOverlay=document.getElementById("jumpscareOverlay"),
+      adminPanel=document.getElementById("adminPanel");
+
+let jumpscareAudio=new Audio(),
+    stories=JSON.parse(localStorage.getItem("stories"))||[{title:"Kamar 666",images:["https://i.imgur.com/OVO3O2g.png"],text:"Setiap orang yang membuka kamar ini mendengar bisikan gelap dan bayangan muncul di sudut mata.\nTak seorang pun keluar tanpa rasa takut."}],
+    ratings=JSON.parse(localStorage.getItem("ratings"))||{},
+    commentsData=JSON.parse(localStorage.getItem("comments"))||{},
+    editIndex=null,
+    activeStory=null;
+
+const storiesDiv=document.getElementById("stories"),
+      detailDiv=document.getElementById("detail"),
+      ratingStars=document.getElementById("ratingStars"),
+      avgRating=document.getElementById("avgRating"),
+      commentsDiv=document.getElementById("comments"),
+      commentBox=document.querySelector(".commentBox"),
+      ratingBox=document.getElementById("ratingBox");
+
+function saveAll(){
+  localStorage.setItem("stories",JSON.stringify(stories));
+  localStorage.setItem("ratings",JSON.stringify(ratings));
+  localStorage.setItem("comments",JSON.stringify(commentsData));
+}
+
+function render(){
+  storiesDiv.innerHTML='';
+  stories.forEach((s,i)=>{
+    let d=document.createElement("div");
+    d.className="story";
+    d.innerText=s.title;
+    if(adminPanel.style.display==="block"){
+      let editBtn=document.createElement("button");
+      editBtn.innerText="Edit";
+      editBtn.onclick=(e)=>{
+        e.stopPropagation();
+        editIndex=i;
+        document.getElementById("title").value=s.title;
+        document.getElementById("text").value=s.text;
+        document.getElementById("fileInput").value="";
+        detailDiv.innerHTML=s.images.map(img=>`<img src="${img}">`).join('');
+      };
+      d.appendChild(editBtn);
+    }
+    d.onclick=()=>openStory(i);
+    storiesDiv.appendChild(d);
+  });
+}
+
+function openStory(i){
+  activeStory=i;
+  // URL gambar jumpscare diubah ke Wikimedia Commons publik
+  jumpscareOverlay.style.backgroundImage=`url('https://upload.wikimedia.org/wikipedia/commons/4/49/Scary_face.png')`;
+  jumpscareOverlay.style.display="block";
+  jumpscareOverlay.style.animation="flicker 1.5s linear";
+  jumpscareAudio.src="https://assets.mixkit.co/sfx/preview/mixkit-horror-ghost-2376.mp3";
+  jumpscareAudio.play();
+  setTimeout(()=>{
+    jumpscareOverlay.style.display="none";
+    let text=stories[i].text;
+    detailDiv.innerHTML=`<h3>${stories[i].title}</h3><div class="story-images">${stories[i].images.map(img=>`<img src="${img}">`).join('')}</div><p id="storyText"></p>`;
+    let storyText=document.getElementById("storyText");
+    let index=0;
+    let interval=setInterval(()=>{
+      storyText.innerText+=text[index++];
+      if(index>=text.length){
+        clearInterval(interval);
+        whisper.play();
+        detailDiv.scrollIntoView({behavior:"smooth",block:"end"});
+      }
+    },35);
+    renderRating(i);
+    renderComments(i);
+  },1500);
+}
+
+// Fungsi lainnya tetap sama
+function renderRating(i){
+  ratingBox.style.display="block";
+  ratingStars.innerHTML="";
+  let r=ratings[i]||[];
+  let avg=r.length?r.reduce((a,b)=>a+b)/r.length:0;
+  avgRating.innerText=avg.toFixed(1);
+  for(let s=1;s<=5;s++){
+    let star=document.createElement("span");
+    star.innerText="★";
+    if(avg>=s)star.classList.add("active");
+    star.onclick=()=>{ r.push(s); ratings[i]=r; saveAll(); renderRating(i); };
+    ratingStars.appendChild(star);
+  }
+}
+
+function renderComments(i){
+  commentBox.style.display="block";
+  commentsDiv.innerHTML=(commentsData[i]||[]).map(c=>`<div class="comment">${c}</div>`).join('');
+}
+
+function addComment(){
+  let t=document.getElementById("newComment").value.trim();
+  if(!t||activeStory===null)return;
+  commentsData[activeStory]=commentsData[activeStory]||[];
+  commentsData[activeStory].push(t);
+  document.getElementById("newComment").value="";
+  saveAll();
+  renderComments(activeStory);
+  detailDiv.scrollIntoView({behavior:"smooth",block:"end"});
+}
+
+function addStory(){
+  const t=document.getElementById("title").value,
+        txt=document.getElementById("text").value,
+        files=document.getElementById("fileInput").files;
+  if(t && txt && files.length>0){
+    let images=[],loaded=0;
+    for(let i=0;i<files.length;i++){
+      const reader=new FileReader();
+      reader.onload=function(e){
+        images.push(e.target.result);
+        loaded++;
+        if(loaded===files.length){
+          stories.push({title:t,images:images,text:txt});
+          saveAll();
+          render();
+          document.getElementById("title").value="";
+          document.getElementById("text").value="";
+          document.getElementById("fileInput").value="";
+          alert("Cerita berhasil ditambahkan!");
+        }
+      };
+      reader.readAsDataURL(files[i]);
+    }
+  }else alert("Isi semua kolom dan pilih minimal satu gambar!");
+}
+
+function saveStory(){
+  if(editIndex!==null){
+    const t=document.getElementById("title").value,
+          txt=document.getElementById("text").value,
+          files=document.getElementById("fileInput").files;
+    if(files.length>0){
+      let images=[],loaded=0;
+      for(let i=0;i<files.length;i++){
+        const reader=new FileReader();
+        reader.onload=function(e){
+          images.push(e.target.result);
+          loaded++;
+          if(loaded===files.length){
+            stories[editIndex]={title:t,images:images,text:txt};
+            saveAll();
+            render();
+            editIndex=null;
+            alert("Perubahan disimpan!");
+          }
+        };
+        reader.readAsDataURL(files[i]);
+      }
+    }else{
+      stories[editIndex].title=t;
+      stories[editIndex].text=txt;
+      saveAll();
+      render();
+      editIndex=null;
+      alert("Perubahan disimpan!");
+    }
+  }else alert("Pilih cerita untuk diedit!");
+}
+
+function toggleAdminPanel(){
+  let p=prompt("Masukkan password admin:");
+  if(p==="admin123"){
+    adminPanel.style.display = adminPanel.style.display==="block"?"none":"block";
+    render();
+  }else alert("Password salah!");
+}
+
+function startApp(){
+  document.getElementById("intro").style.display="none";
+  document.getElementById("app").style.display="block";
+  bg.volume=0.4;
+  bg.play();
+  render();
+}
+
+function toggleTheme(){
+  document.body.classList.toggle("light");
+  localStorage.setItem("theme",document.body.classList.contains("light")?"light":"dark");
+}
+
+function exportStories(){
+  let data=JSON.stringify(stories,null,2);
+  let blob=new Blob([data],{type:"application/json"});
+  let a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="cerita.json";
+  a.click();
+}
+</script>
+
+</body>
+</html>
